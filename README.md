@@ -1,4 +1,5 @@
 # SpotifyAutomation-JSX
+## Designed to work with Adobe Illustrator CC 2023, Unsure Of Backwards Compatibility.
 Automatically Generate Artwork in Abobe Illustrator using Adobe's ExtendScript
 + Uses Spotify API
 + Uses curl for Windows https://curl.se/download.html
