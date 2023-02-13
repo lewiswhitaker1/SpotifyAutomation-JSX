@@ -389,6 +389,7 @@ function partThree() {
 
           trackJson.remove();
       }
+      if(choice == "playlist"){
     }
     else {
       songName = prompt("Enter song name:", "");
