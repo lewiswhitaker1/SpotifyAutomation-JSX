@@ -430,8 +430,11 @@ function partThree() {
             songName = jsonData.name;
 
             trackJson.remove();
-
-        } else {
+}
+        if (choice == "album"){
+          
+        }
+         else {
             songName = prompt("Enter song name:", "");
             artistName = prompt("Enter artist name:", "");
         }
