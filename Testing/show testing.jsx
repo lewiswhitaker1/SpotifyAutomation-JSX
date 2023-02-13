@@ -26,7 +26,7 @@ trackJsonBat.execute();
 $.sleep(5000);
 authBat.remove();
 authTokenFile.remove();
-//trackJsonBat.remove();
+trackJsonBat.remove();
 
 var artistName;
 var songName;
@@ -45,4 +45,4 @@ songName = jsonData.name;
 alert(trackId);
 alert(songName);
 
-//trackJson.remove();
+trackJson.remove();
