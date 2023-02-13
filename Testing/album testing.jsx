@@ -39,7 +39,7 @@ trackJson.close();
 #include 'json2.min.js'
 
 var jsonData = JSON.parse(jsonContent);
-artistName = jsonData.artists.name;
+artistName = jsonData.artists[0].name;
 songName = jsonData.name;
 
 alert(artistName + " " + songName);
