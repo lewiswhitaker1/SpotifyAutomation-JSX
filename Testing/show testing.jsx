@@ -12,13 +12,13 @@ var authToken = authTokenFile.read();
 authTokenFile.close();
 
 //var trackId = getTrackIdFromSpotifyUrl(spotifyUrl);
-var trackId = "3gC8VKeT4bkctx2rgHXOLO";
+var trackId = "49taGrum1qcozh4K7O0beZ";
 
 var trackJsonBat = new File(Folder.desktop + "/TRACK_JSON.bat");
 trackJsonBat.open("w");
 trackJsonBat.write("set TRACKID=" + trackId + "\n");
 trackJsonBat.write("set AUTHTOKEN=" + authToken + "\n");
-trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/shows/%TRACKID%\" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
+trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/shows/%TRACKID%" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
 trackJsonBat.close();
 
 trackJsonBat.execute();
@@ -39,7 +39,9 @@ trackJson.close();
 #include 'json2.min.js'
 
 var jsonData = JSON.parse(jsonContent);
-artistName = jsonData.owner.display_name;
+artistName = "";
 songName = jsonData.name;
 
-trackJson.remove();
+alert(songName);
+
+//trackJson.remove();
