@@ -1,4 +1,5 @@
 #target "illustrator"
+#include 'json2.min.js'
 
 var url;
 var choice;
@@ -262,8 +263,6 @@ function partThree() {
         var cmd = "wget -O %UserProfile%\\Desktop\\spotify.json " + jsonUrl;
         run(cmd);
 
-        #include 'json2.min.js'
-
         var file = new File(File.decode(Folder.desktop + "/spotify.json"));
         while (!file.exists) {
             $.sleep(1000); // sleep for 1 second
@@ -377,8 +376,6 @@ function partThree() {
             var jsonContent = trackJson.read();
             trackJson.close();
 
-            #include 'json2.min.js'
-
             var jsonData = JSON.parse(jsonContent);
             artistName = jsonData.album.artists[0].name;
             songName = jsonData.name;
@@ -422,8 +419,6 @@ function partThree() {
             trackJson.open("r");
             var jsonContent = trackJson.read();
             trackJson.close();
-
-            #include 'json2.min.js'
 
             var jsonData = JSON.parse(jsonContent);
             artistName = jsonData.owner.display_name;
@@ -469,8 +464,6 @@ function partThree() {
             var jsonContent = trackJson.read();
             trackJson.close();
 
-            #include 'json2.min.js'
-
             var jsonData = JSON.parse(jsonContent);
             artistName = jsonData.artists[0].name;
             songName = jsonData.name;
@@ -514,8 +507,6 @@ function partThree() {
           trackJson.open("r");
           var jsonContent = trackJson.read();
           trackJson.close();
-
-          #include 'json2.min.js'
 
           var jsonData = JSON.parse(jsonContent);
           artistName = "";
@@ -664,6 +655,7 @@ function partThree() {
         var file = new File(File.decode(Folder.desktop + "/spotify.svg"));
         file.remove();
     }
+  }
 
     partOne();
 
