@@ -11,7 +11,8 @@ authTokenFile.open("r");
 var authToken = authTokenFile.read();
 authTokenFile.close();
 
-var trackId = getTrackIdFromSpotifyUrl(spotifyUrl);
+//var trackId = getTrackIdFromSpotifyUrl(spotifyUrl);
+var trackId = "2nlcDXIVAUjumH28Eo7cSr";
 
 var trackJsonBat = new File(Folder.desktop + "/TRACK_JSON.bat");
 trackJsonBat.open("w");
@@ -30,16 +31,17 @@ $.sleep(5000);
 var artistName;
 var songName;
 
-//var trackJson = File("~/Desktop/track.json");
-//trackJson.open("r");
-//var jsonContent = trackJson.read();
-//trackJson.close();
+var trackJson = File("~/Desktop/track.json");
+trackJson.open("r");
+var jsonContent = trackJson.read();
+trackJson.close();
 
-//#include 'json2.min.js'
+#include 'json2.min.js'
 
-//var jsonData = JSON.parse(jsonContent);
-//artistName = jsonData.album.artists[0].name;
-//songName = jsonData.name;
+var jsonData = JSON.parse(jsonContent);
+artistName = jsonData.owner.display_name;
+songName = jsonData.name;
+
+alert(artistName + " " + songName);
 
 //trackJson.remove();
-}
