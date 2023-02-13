@@ -4,92 +4,88 @@ var url;
 var choice;
 
 function partOne() {
-  var codeMenu = new Window("dialog", "Code Type");
+    var codeMenu = new Window("dialog", "Code Type");
 
-  var song = codeMenu.add("button", undefined, "Song");
+    var song = codeMenu.add("button", undefined, "Song");
 
-  var album = codeMenu.add("button", undefined, "Album");
+    var album = codeMenu.add("button", undefined, "Album");
 
-  var playlist = codeMenu.add("button", undefined, "Playlist");
+    var playlist = codeMenu.add("button", undefined, "Playlist");
 
-  var podcast = codeMenu.add("button", undefined, "Podcast");
+    var podcast = codeMenu.add("button", undefined, "Podcast");
 
-  var spotifyUrl;
-  var codeUrl;
+    var spotifyUrl;
+    var codeUrl;
 
-  song.onClick = function() {
+    song.onClick = function() {
 
-      spotifyUrl = prompt("Enter spotify URL:", "");
-      choice = "song";
-      url = spotifyUrl;
-      codeMenu.close();
+        spotifyUrl = prompt("Enter spotify URL:", "");
+        choice = "song";
+        url = spotifyUrl;
+        codeMenu.close();
 
-  };
+    };
 
-  album.onClick = function() {
+    album.onClick = function() {
 
-    spotifyUrl = prompt("Enter spotify URL:", "");
-    choice = "album";
-    url = spotifyUrl;
-    codeMenu.close();
+        spotifyUrl = prompt("Enter spotify URL:", "");
+        choice = "album";
+        url = spotifyUrl;
+        codeMenu.close();
 
-  };
+    };
 
-  playlist.onClick = function() {
+    playlist.onClick = function() {
 
-    spotifyUrl = prompt("Enter spotify URL:", "");
-    choice = "playlist";
-    url = spotifyUrl;
-    codeMenu.close();
+        spotifyUrl = prompt("Enter spotify URL:", "");
+        choice = "playlist";
+        url = spotifyUrl;
+        codeMenu.close();
 
-  };
+    };
 
-  podcast.onClick = function() {
+    podcast.onClick = function() {
 
-    spotifyUrl = prompt("Enter spotify URL:", "");
-    choice = "podcast";
-    url = spotifyUrl;
-    codeMenu.close();
+        spotifyUrl = prompt("Enter spotify URL:", "");
+        choice = "podcast";
+        url = spotifyUrl;
+        codeMenu.close();
 
-  };
+    };
 
-  codeMenu.show();
+    codeMenu.show();
 
-  var lastSlash = spotifyUrl.lastIndexOf("/");
-  var parsedUrl = spotifyUrl.substring(lastSlash + 1);
+    var lastSlash = spotifyUrl.lastIndexOf("/");
+    var parsedUrl = spotifyUrl.substring(lastSlash + 1);
 
-  if(choice == "song")
-  {
-    codeUrl = "https://scannables.scdn.co/uri/plain/svg/FFFFFF/black/1000/spotify:track:" + parsedUrl;
-  }
-  if(choice == "playlist")
-  {
-    codeUrl = "https://scannables.scdn.co/uri/plain/svg/FFFFFF/black/1000/spotify:playlist:" + parsedUrl;
-  }
-  if(choice == "album")
-  {
-    codeUrl = "https://scannables.scdn.co/uri/plain/svg/FFFFFF/black/1000/spotify:album:" + parsedUrl;
-  }
-  if(choice == "podcast")
-  {
-    codeUrl = "https://scannables.scdn.co/uri/plain/svg/FFFFFF/black/1000/spotify:show:" + parsedUrl;
-  }
+    if (choice == "song") {
+        codeUrl = "https://scannables.scdn.co/uri/plain/svg/FFFFFF/black/1000/spotify:track:" + parsedUrl;
+    }
+    if (choice == "playlist") {
+        codeUrl = "https://scannables.scdn.co/uri/plain/svg/FFFFFF/black/1000/spotify:playlist:" + parsedUrl;
+    }
+    if (choice == "album") {
+        codeUrl = "https://scannables.scdn.co/uri/plain/svg/FFFFFF/black/1000/spotify:album:" + parsedUrl;
+    }
+    if (choice == "podcast") {
+        codeUrl = "https://scannables.scdn.co/uri/plain/svg/FFFFFF/black/1000/spotify:show:" + parsedUrl;
+    }
 
-  //var bt = new BridgeTalk();
-  //bt.target = "photoshop";
-  //bt.body = "app.system('wget -O %UserProfile%\\Desktop\\spotify.svg " + codeUrl + "')";
-  //bt.onError = function(err) { alert(err.body); }
-  //bt.send();
+    //var bt = new BridgeTalk();
+    //bt.target = "photoshop";
+    //bt.body = "app.system('wget -O %UserProfile%\\Desktop\\spotify.svg " + codeUrl + "')";
+    //bt.onError = function(err) { alert(err.body); }
+    //bt.send();
 
-  var cmd = "wget -O %UserProfile%\\Desktop\\spotify.svg " + codeUrl;
-  run(cmd);
+    var cmd = "wget -O %UserProfile%\\Desktop\\spotify.svg " + codeUrl;
+    run(cmd);
 
-  var file = new File(File.decode(Folder.desktop + "/spotify.svg"));
+    var file = new File(File.decode(Folder.desktop + "/spotify.svg"));
 
-  while(!file.exists) {
-    $.sleep(1000); // sleep for 1 second
-  }
-  app.open(file);
+    while (!file.exists) {
+        $.sleep(1000); // sleep for 1 second
+    }
+    app.open(file);
 }
 
 function partTwo() {
@@ -180,7 +176,8 @@ function partThree() {
         bottomPath.remove();
     }
 
-    var uuid = new Date().getTime();
+    var uuid = new Date()
+        .getTime();
 
     app.doScript("Import (SHIFT + F3)", "Spotify");
 
@@ -230,8 +227,8 @@ function partThree() {
     var but2 = ps.add("button", undefined, "Personalised Photo");
 
     but1.onClick = function() {
-      choiceTwo = "album";
-      ps.close();
+        choiceTwo = "album";
+        ps.close();
     };
 
     but2.onClick = function() {
@@ -253,8 +250,7 @@ function partThree() {
 
     ps.show();
 
-    if(choiceTwo == "album")
-    {
+    if (choiceTwo == "album") {
         var spotifyUrl = url;
         var jsonUrl = "https://open.spotify.com/oembed?url=" + spotifyUrl;
 
@@ -267,9 +263,10 @@ function partThree() {
         run(cmd);
 
         #include 'json2.min.js'
+
         var file = new File(File.decode(Folder.desktop + "/spotify.json"));
-        while(!file.exists) {
-          $.sleep(1000); // sleep for 1 second
+        while (!file.exists) {
+            $.sleep(1000); // sleep for 1 second
         }
         file.open("r");
         var jsonString = file.read();
@@ -316,8 +313,8 @@ function partThree() {
 
         var photoFile = new File(File.decode(Folder.desktop + "/" + uuid + ".pdf"));
 
-        while(!photoFile.exists) {
-          $.sleep(1000); // sleep for 1 second
+        while (!photoFile.exists) {
+            $.sleep(1000); // sleep for 1 second
         }
 
         var placedPhoto = targetDoc.placedItems.add();
@@ -341,223 +338,268 @@ function partThree() {
     var songName;
     var artistName;
 
-    if(choiceTwo == "album")
-    {
-      if (choice == "song") {
-          var authBat = new File(Folder.desktop + "/AUTH.bat");
-          authBat.open("w");
-          authBat.write("@echo off" + "\n");
-          authBat.write('powershell -Command "$encoded=[convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(\\"630362daba20469cb86bd75228f7e237:aeef6fa8de86452fa82b543f034d4858\\"));$response=curl.exe -X \\"POST\\" -H \\"Authorization: Basic $encoded\\" -d grant_type=client_credentials https://accounts.spotify.com/api/token;$key=($response | ConvertFrom-Json).access_token;$key" > %userprofile%\\Desktop\\key.txt');
-          authBat.close();
-          authBat.execute();
+    if (choiceTwo == "album") {
+        if (choice == "song") {
+            var authBat = new File(Folder.desktop + "/AUTH.bat");
+            authBat.open("w");
+            authBat.write("@echo off" + "\n");
+            authBat.write('powershell -Command "$encoded=[convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(\\"630362daba20469cb86bd75228f7e237:aeef6fa8de86452fa82b543f034d4858\\"));$response=curl.exe -X \\"POST\\" -H \\"Authorization: Basic $encoded\\" -d grant_type=client_credentials https://accounts.spotify.com/api/token;$key=($response | ConvertFrom-Json).access_token;$key" > %userprofile%\\Desktop\\key.txt');
+            authBat.close();
+            authBat.execute();
 
-          var authTokenFile = new File(Folder.desktop + "/key.txt");
-          $.sleep(1000);
-          authTokenFile.open("r");
-          var authToken = authTokenFile.read();
-          authTokenFile.close();
+            var authTokenFile = new File(Folder.desktop + "/key.txt");
+            $.sleep(1000);
+            authTokenFile.open("r");
+            var authToken = authTokenFile.read();
+            authTokenFile.close();
 
-          var trackId = getTrackIdFromSpotifyUrl(spotifyUrl);
+            var trackId = getTrackIdFromSpotifyUrl(spotifyUrl);
 
-          var trackJsonBat = new File(Folder.desktop + "/TRACK_JSON.bat");
-          trackJsonBat.open("w");
-          trackJsonBat.write("set TRACKID=" + trackId + "\n");
-          trackJsonBat.write("set AUTHTOKEN=" + authToken + "\n");
-          trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/tracks/%TRACKID%\" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
-          trackJsonBat.close();
+            var trackJsonBat = new File(Folder.desktop + "/TRACK_JSON.bat");
+            trackJsonBat.open("w");
+            trackJsonBat.write("set TRACKID=" + trackId + "\n");
+            trackJsonBat.write("set AUTHTOKEN=" + authToken + "\n");
+            trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/tracks/%TRACKID%\" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
+            trackJsonBat.close();
 
-          trackJsonBat.execute();
+            trackJsonBat.execute();
 
-          $.sleep(5000);
-          authBat.remove();
-          authTokenFile.remove();
-          trackJsonBat.remove();
+            $.sleep(5000);
+            authBat.remove();
+            authTokenFile.remove();
+            trackJsonBat.remove();
 
-          var artistName;
-          var songName;
+            var artistName;
+            var songName;
 
-          var trackJson = File("~/Desktop/track.json");
-          trackJson.open("r");
-          var jsonContent = trackJson.read();
-          trackJson.close();
+            var trackJson = File("~/Desktop/track.json");
+            trackJson.open("r");
+            var jsonContent = trackJson.read();
+            trackJson.close();
 
-          #include 'json2.min.js'
+            #include 'json2.min.js'
 
-          var jsonData = JSON.parse(jsonContent);
-          artistName = jsonData.album.artists[0].name;
-          songName = jsonData.name;
+            var jsonData = JSON.parse(jsonContent);
+            artistName = jsonData.album.artists[0].name;
+            songName = jsonData.name;
 
-          trackJson.remove();
-      }
-      if(choice == "playlist"){
-    }
-    else {
-      songName = prompt("Enter song name:", "");
-      artistName = prompt("Enter artist name:", "");
-    }
+            trackJson.remove();
+        }
+        if (choice == "playlist") {
+            var authBat = new File(Folder.desktop + "/AUTH.bat");
+            authBat.open("w");
+            authBat.write("@echo off" + "\n");
+            authBat.write('powershell -Command "$encoded=[convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(\\"630362daba20469cb86bd75228f7e237:aeef6fa8de86452fa82b543f034d4858\\"));$response=curl.exe -X \\"POST\\" -H \\"Authorization: Basic $encoded\\" -d grant_type=client_credentials https://accounts.spotify.com/api/token;$key=($response | ConvertFrom-Json).access_token;$key" > %userprofile%\\Desktop\\key.txt');
+            authBat.close();
+            authBat.execute();
 
-    var copyName = copy.name;
+            var authTokenFile = new File(Folder.desktop + "/key.txt");
+            $.sleep(1000);
+            authTokenFile.open("r");
+            var authToken = authTokenFile.read();
+            authTokenFile.close();
 
-    // Get the active document
-    var doc = app.activeDocument;
+            var trackId = getTrackIdFromSpotifyUrl(spotifyUrl);
 
-    // Loop through all the artboards in the document
-    for (var i = 0; i < doc.artboards.length; i++) {
-        // Set the current artboard as the active artboard
-        doc.artboards.setActiveArtboardIndex(i);
+            var trackJsonBat = new File(Folder.desktop + "/TRACK_JSON.bat");
+            trackJsonBat.open("w");
+            trackJsonBat.write("set TRACKID=" + trackId + "\n");
+            trackJsonBat.write("set AUTHTOKEN=" + authToken + "\n");
+            trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/playlists/%TRACKID%\" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
+            trackJsonBat.close();
 
-        // Loop through all the groups in the active artboard
-        for (var j = 0; j < doc.groupItems.length; j++) {
-            var group = doc.groupItems[j];
+            trackJsonBat.execute();
 
-            // Check if the group has the name "Small123"
-            if (group.name === copyName) {
-                // Loop through all the text layers in the group
-                for (var k = 0; k < group.textFrames.length; k++) {
-                    var textLayer = group.textFrames[k];
-                    if (textLayer.contents.indexOf("Song Name") !== -1) {
-                        // Set the text of the text layer to the new text
-                        textLayer.contents = songName;
+            $.sleep(5000);
+            authBat.remove();
+            authTokenFile.remove();
+            trackJsonBat.remove();
+
+            var artistName;
+            var songName;
+
+            var trackJson = File("~/Desktop/track.json");
+            trackJson.open("r");
+            var jsonContent = trackJson.read();
+            trackJson.close();
+
+            #include 'json2.min.js'
+
+            var jsonData = JSON.parse(jsonContent);
+            artistName = jsonData.owner.display_name;
+            songName = jsonData.name;
+
+            trackJson.remove();
+
+        } else {
+            songName = prompt("Enter song name:", "");
+            artistName = prompt("Enter artist name:", "");
+        }
+
+        var copyName = copy.name;
+
+        // Get the active document
+        var doc = app.activeDocument;
+
+        // Loop through all the artboards in the document
+        for (var i = 0; i < doc.artboards.length; i++) {
+            // Set the current artboard as the active artboard
+            doc.artboards.setActiveArtboardIndex(i);
+
+            // Loop through all the groups in the active artboard
+            for (var j = 0; j < doc.groupItems.length; j++) {
+                var group = doc.groupItems[j];
+
+                // Check if the group has the name "Small123"
+                if (group.name === copyName) {
+                    // Loop through all the text layers in the group
+                    for (var k = 0; k < group.textFrames.length; k++) {
+                        var textLayer = group.textFrames[k];
+                        if (textLayer.contents.indexOf("Song Name") !== -1) {
+                            // Set the text of the text layer to the new text
+                            textLayer.contents = songName;
+                        }
                     }
                 }
             }
         }
-    }
 
-    // Loop through all the artboards in the document
-    for (var i = 0; i < doc.artboards.length; i++) {
-        // Set the current artboard as the active artboard
-        doc.artboards.setActiveArtboardIndex(i);
+        // Loop through all the artboards in the document
+        for (var i = 0; i < doc.artboards.length; i++) {
+            // Set the current artboard as the active artboard
+            doc.artboards.setActiveArtboardIndex(i);
 
-        // Loop through all the groups in the active artboard
-        for (var j = 0; j < doc.groupItems.length; j++) {
-            var group = doc.groupItems[j];
+            // Loop through all the groups in the active artboard
+            for (var j = 0; j < doc.groupItems.length; j++) {
+                var group = doc.groupItems[j];
 
-            // Check if the group has the name "Small123"
-            if (group.name === copyName) {
-                // Loop through all the text layers in the group
-                for (var k = 0; k < group.textFrames.length; k++) {
-                    var textLayer = group.textFrames[k];
-                    if (textLayer.contents.indexOf("Artist Name") !== -1) {
-                        // Set the text of the text layer to the new text
-                        textLayer.contents = artistName;
+                // Check if the group has the name "Small123"
+                if (group.name === copyName) {
+                    // Loop through all the text layers in the group
+                    for (var k = 0; k < group.textFrames.length; k++) {
+                        var textLayer = group.textFrames[k];
+                        if (textLayer.contents.indexOf("Artist Name") !== -1) {
+                            // Set the text of the text layer to the new text
+                            textLayer.contents = artistName;
+                        }
                     }
                 }
             }
         }
-    }
-    copy.transform(app.getScaleMatrix(-100, 100));
+        copy.transform(app.getScaleMatrix(-100, 100));
 
-    var layerExists = false;
+        var layerExists = false;
 
-    for (var i = 0; i < doc.layers.length; i++) {
-        if (doc.layers[i].name == "Artwork") {
-            layerExists = true;
-            break;
-        }
-    }
-
-    if (!layerExists) {
-        var layer = doc.layers.add();
-        layer.name = "Artwork";
-        copy.move(layer, ElementPlacement.PLACEATEND);
-
-        var distance = 5;
-        var distanceInPoints = distance * 2.8346;
-        var artboard = doc.artboards[0];
-        var artboardRect = artboard.artboardRect;
-
-
-        var newX = artboardRect[0] + distanceInPoints;
-        var newY = artboardRect[1] - distanceInPoints;
-        copy.position = [newX, newY];
-    }
-
-    if (layerExists) {
-        var layer = doc.layers.getByName("Artwork");
-        var bottomGroup;
-
-        for (var i = 0; i < layer.groupItems.length; i++) {
-            var group = layer.groupItems[i];
-
-            // Check if this is the bottom group
-            if (!bottomGroup || group.position[1] > bottomGroup.position[1]) {
-                bottomGroup = group;
+        for (var i = 0; i < doc.layers.length; i++) {
+            if (doc.layers[i].name == "Artwork") {
+                layerExists = true;
+                break;
             }
         }
 
-        copy.move(layer, ElementPlacement.PLACEATEND);
+        if (!layerExists) {
+            var layer = doc.layers.add();
+            layer.name = "Artwork";
+            copy.move(layer, ElementPlacement.PLACEATEND);
 
-        var offset = bottomGroup.top - copy.top;
-        copy.top += offset;
+            var distance = 5;
+            var distanceInPoints = distance * 2.8346;
+            var artboard = doc.artboards[0];
+            var artboardRect = artboard.artboardRect;
 
-        var distance = 10;
-        var distanceInPoints = distance * 2.8346;
 
+            var newX = artboardRect[0] + distanceInPoints;
+            var newY = artboardRect[1] - distanceInPoints;
+            copy.position = [newX, newY];
+        }
 
-        // Get the artboard and the groups on the artboard
-        var artboard = doc.artboards[0];
-        var groups = layer.groupItems;
+        if (layerExists) {
+            var layer = doc.layers.getByName("Artwork");
+            var bottomGroup;
 
-        // Set the distance between groups
-        var distance = 10;
-        var distanceInPoints = distance * 2.8346;
+            for (var i = 0; i < layer.groupItems.length; i++) {
+                var group = layer.groupItems[i];
 
-        // Set the starting position for the first group
-        var x = artboard.artboardRect[0] + distanceInPoints;
-        var y = artboard.artboardRect[1] - distanceInPoints;
-
-        // Loop through the groups
-        for (var i = 0; i < groups.length; i++) {
-            var group = groups[i];
-
-            // Check if the group fits on the current row
-            if (x + group.width > artboard.artboardRect[2]) {
-                // Move the group to the next row
-                x = artboard.artboardRect[0] + distanceInPoints;
-                y += (group.height - (group.height * 2)) - distanceInPoints;
+                // Check if this is the bottom group
+                if (!bottomGroup || group.position[1] > bottomGroup.position[1]) {
+                    bottomGroup = group;
+                }
             }
 
-            // Move the group to the current position
-            group.left = x;
-            group.top = y;
+            copy.move(layer, ElementPlacement.PLACEATEND);
 
-            // Update the current position for the next group
-            x += group.width + distanceInPoints;
+            var offset = bottomGroup.top - copy.top;
+            copy.top += offset;
+
+            var distance = 10;
+            var distanceInPoints = distance * 2.8346;
+
+
+            // Get the artboard and the groups on the artboard
+            var artboard = doc.artboards[0];
+            var groups = layer.groupItems;
+
+            // Set the distance between groups
+            var distance = 10;
+            var distanceInPoints = distance * 2.8346;
+
+            // Set the starting position for the first group
+            var x = artboard.artboardRect[0] + distanceInPoints;
+            var y = artboard.artboardRect[1] - distanceInPoints;
+
+            // Loop through the groups
+            for (var i = 0; i < groups.length; i++) {
+                var group = groups[i];
+
+                // Check if the group fits on the current row
+                if (x + group.width > artboard.artboardRect[2]) {
+                    // Move the group to the next row
+                    x = artboard.artboardRect[0] + distanceInPoints;
+                    y += (group.height - (group.height * 2)) - distanceInPoints;
+                }
+
+                // Move the group to the current position
+                group.left = x;
+                group.top = y;
+
+                // Update the current position for the next group
+                x += group.width + distanceInPoints;
+            }
         }
+        var file = new File(File.decode(Folder.desktop + "/spotify.svg"));
+        file.remove();
     }
-    var file = new File(File.decode(Folder.desktop + "/spotify.svg"));
-    file.remove();
-}
 
-partOne();
+    partOne();
 
-$.sleep(1000);
+    $.sleep(1000);
 
-partTwo();
+    partTwo();
 
-$.sleep(1000);
+    $.sleep(1000);
 
-partThree();
+    partThree();
 
-function create_UUID(){
-    var dt = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (dt + Math.random()*16)%16 | 0;
-        dt = Math.floor(dt/16);
-        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
-    });
-    return uuid;
-}
+    function create_UUID() {
+        var dt = new Date()
+            .getTime();
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (dt + Math.random() * 16) % 16 | 0;
+            dt = Math.floor(dt / 16);
+            return (c == 'x' ? r : (r & 0x3 | 0x8))
+                .toString(16);
+        });
+        return uuid;
+    }
 
-function getTrackIdFromSpotifyUrl(url) {
-  return url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
-}
+    function getTrackIdFromSpotifyUrl(url) {
+        return url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
+    }
 
-function run(cmd) {
-    var f = new File(Folder.temp.fsName + "/temp.bat");
+    function run(cmd) {
+        var f = new File(Folder.temp.fsName + "/temp.bat");
         f.open("w");
         f.writeln(cmd);
         f.close();
         f.execute();
-}
+    }
