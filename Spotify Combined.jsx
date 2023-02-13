@@ -475,8 +475,8 @@ function partThree() {
             artistName = jsonData.artists[0].name;
             songName = jsonData.name;
 
-            trackJson.remove();
-        } else {
+            trackJson.remove();}
+        else {
             songName = prompt("Enter song name:", "");
             artistName = prompt("Enter artist name:", "");
         }
