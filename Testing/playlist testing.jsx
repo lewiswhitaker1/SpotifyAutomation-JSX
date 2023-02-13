@@ -23,23 +23,23 @@ trackJsonBat.close();
 trackJsonBat.execute();
 
 $.sleep(5000);
-authBat.remove();
-authTokenFile.remove();
-trackJsonBat.remove();
+//authBat.remove();
+//authTokenFile.remove();
+//trackJsonBat.remove();
 
 var artistName;
 var songName;
 
-var trackJson = File("~/Desktop/track.json");
-trackJson.open("r");
-var jsonContent = trackJson.read();
-trackJson.close();
+//var trackJson = File("~/Desktop/track.json");
+//trackJson.open("r");
+//var jsonContent = trackJson.read();
+//trackJson.close();
 
-#include 'json2.min.js'
+//#include 'json2.min.js'
 
-var jsonData = JSON.parse(jsonContent);
-artistName = jsonData.album.artists[0].name;
-songName = jsonData.name;
+//var jsonData = JSON.parse(jsonContent);
+//artistName = jsonData.album.artists[0].name;
+//songName = jsonData.name;
 
-trackJson.remove();
+//trackJson.remove();
 }
