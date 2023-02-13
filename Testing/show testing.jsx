@@ -11,7 +11,8 @@
     var authToken = authTokenFile.read();
     authTokenFile.close();
 
-    var trackId = getTrackIdFromSpotifyUrl(spotifyUrl);
+    //var trackId = getTrackIdFromSpotifyUrl(spotifyUrl);
+    var trackId = "3gC8VKeT4bkctx2rgHXOLO"
 
     var trackJsonBat = new File(Folder.desktop + "/TRACK_JSON.bat");
     trackJsonBat.open("w");
