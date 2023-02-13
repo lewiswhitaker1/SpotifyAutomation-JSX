@@ -18,7 +18,7 @@ var trackJsonBat = new File(Folder.desktop + "/TRACK_JSON.bat");
 trackJsonBat.open("w");
 trackJsonBat.write("set TRACKID=" + trackId + "\n");
 trackJsonBat.write("set AUTHTOKEN=" + authToken + "\n");
-trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/shows/%TRACKID%" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
+trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/shows/%TRACKID%\?market=GB" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
 trackJsonBat.close();
 
 trackJsonBat.execute();
@@ -26,7 +26,7 @@ trackJsonBat.execute();
 $.sleep(5000);
 authBat.remove();
 authTokenFile.remove();
-trackJsonBat.remove();
+//trackJsonBat.remove();
 
 var artistName;
 var songName;
@@ -42,6 +42,7 @@ var jsonData = JSON.parse(jsonContent);
 artistName = "";
 songName = jsonData.name;
 
+alert(trackId);
 alert(songName);
 
 //trackJson.remove();
