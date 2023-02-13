@@ -18,7 +18,7 @@
     trackJsonBat.open("w");
     trackJsonBat.write("set TRACKID=" + trackId + "\n");
     trackJsonBat.write("set AUTHTOKEN=" + authToken + "\n");
-    trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/show/%TRACKID%\" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
+    trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/shows/%TRACKID%\" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
     trackJsonBat.close();
 
     trackJsonBat.execute();
