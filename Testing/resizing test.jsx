@@ -15,10 +15,17 @@ if (pathItems.length > 0) {
     bottomPath.remove();
 }
 
-var allItems = doc.pageItems;
-var group = doc.groupItems.add();
-for (var i = 0; i < allItems.length; i++) {
-    allItems[i].moveToBeginning(group);
+var myLayer = doc.layers.getByName("Layer 1");
+
+var paths = myLayer.pathItems;
+var compounds = myLayer.compoundPathItems;
+
+var group = myLayer.groupItems.add();
+for (var i = 0; i < paths.length; i++) {
+    paths[i].moveToBeginning(group);
+}
+for (var i = 0; i < compounds.length; i++) {
+    compounds[i].moveToBeginning(group);
 }
 
 group.width = 165.49;
