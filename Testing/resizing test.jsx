@@ -15,10 +15,10 @@ if (pathItems.length > 0) {
     bottomPath.remove();
 }
 
-var selection = doc.selection;
+var allItems = doc.pageItems.everyItem().getElements();
 var group = doc.groupItems.add();
-for (var i = 0; i < selection.length; i++) {
-    selection[i].moveToBeginning(group);
+for (var i = 0; i < allItems.length; i++) {
+    allItems[i].moveToBeginning(group);
 }
 
 group.width = 165.49;
