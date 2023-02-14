@@ -108,6 +108,7 @@ function partTwo() {
 }
 
 function partThree() {
+  alert(choice);
     // Create a new window
     var win = new Window("dialog", "Size Selection");
 
@@ -516,10 +517,6 @@ function partThree() {
           alert(songName);
 
           trackJson.remove();
-        }
-        else {
-            songName = prompt("Enter song name:", "");
-            artistName = prompt("Enter artist name:", "");
         }
 
         var copyName = copy.name;
