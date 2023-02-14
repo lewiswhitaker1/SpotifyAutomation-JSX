@@ -15,7 +15,7 @@ if (pathItems.length > 0) {
     bottomPath.remove();
 }
 
-var allItems = doc.pageItems.everyItem().getElements();
+var allItems = doc.pageItems;
 var group = doc.groupItems.add();
 for (var i = 0; i < allItems.length; i++) {
     allItems[i].moveToBeginning(group);
