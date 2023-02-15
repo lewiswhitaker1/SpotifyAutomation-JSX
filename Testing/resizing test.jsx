@@ -17,8 +17,26 @@ if (pathItems.length > 0) {
 
 var myLayer = doc.layers.getByName("Layer 1");
 
-var paths = myLayer.pathItems;
-var compounds = myLayer.compoundPathItems;
+var paths = [];
+var compounds = [];
+
+// Recursively find all paths and compound paths in the layer
+function collectPaths(item) {
+    if (item.typename == "PathItem") {
+        paths.push(item);
+    } else if (item.typename == "CompoundPathItem") {
+        compounds.push(item);
+    } else if (item.typename == "GroupItem") {
+        for (var i = 0; i < item.pageItems.length; i++) {
+            collectPaths(item.pageItems[i]);
+        }
+    }
+}
+
+// Get all paths and compound paths in the layer
+for (var i = 0; i < myLayer.pageItems.length; i++) {
+    collectPaths(myLayer.pageItems[i]);
+}
 
 var group = myLayer.groupItems.add();
 for (var i = 0; i < paths.length; i++) {
@@ -28,5 +46,11 @@ for (var i = 0; i < compounds.length; i++) {
     compounds[i].moveToBeginning(group);
 }
 
-group.width = 165.49;
-group.height = 78.185;
+var widthInMm = 58.382;
+var heightInMm = 9.73;
+
+var widthInPt = widthInMm / 25.4 * 72;
+var heightInPt = heightInMm / 25.4 * 72;
+
+group.width = widthInPt;
+group.height = heightInPt;
