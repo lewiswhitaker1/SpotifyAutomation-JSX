@@ -1,78 +1,42 @@
 package me.lewis.cropper;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.event.MouseInputAdapter;
 
 public class ImageWindow extends JPanel {
 
     private Image image;
-    private Rectangle cropRect;
+    private Point topLeft;
+    private int cropSize;
 
     public ImageWindow(Image image) {
         this.image = image;
         setPreferredSize(new Dimension(image.getWidth(null), image.getHeight(null)));
-        addMouseListener(new CropMouseListener());
-        addMouseMotionListener(new CropMouseListener());
-        // Initialize crop rectangle to center of the window
-        int cropSize = Math.min(image.getWidth(null), image.getHeight(null)) / 2;
-        int cropX = (image.getWidth(null) - cropSize) / 2;
-        int cropY = (image.getHeight(null) - cropSize) / 2;
-        cropRect = new Rectangle(cropX, cropY, cropSize, cropSize);
+        topLeft = new Point(0, 0);
+        cropSize = Math.min(image.getWidth(null), image.getHeight(null));
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Draw the image
         g.drawImage(image, 0, 0, null);
-        // Draw the crop rectangle
-        g.drawRect(cropRect.x, cropRect.y, cropRect.width, cropRect.height);
-    }
-
-    private class CropMouseListener extends MouseInputAdapter {
-
-        private int startX, startY;
-
-        @Override
-        public void mousePressed(java.awt.event.MouseEvent e) {
-            startX = e.getX();
-            startY = e.getY();
-        }
-
-        @Override
-        public void mouseDragged(java.awt.event.MouseEvent e) {
-            // Calculate the new crop rectangle based on the mouse position
-            int dx = e.getX() - startX;
-            int dy = e.getY() - startY;
-            int cropSize = Math.min(image.getWidth(null), image.getHeight(null));
-            int cropX = cropRect.x + dx;
-            int cropY = cropRect.y + dy;
-            cropRect = new Rectangle(cropX, cropY, cropSize, cropSize);
-            // Force the crop rectangle to be square
-            if (cropRect.x < 0) {
-                cropRect.x = 0;
-            }
-            if (cropRect.y < 0) {
-                cropRect.y = 0;
-            }
-            if (cropRect.x + cropRect.width > image.getWidth(null)) {
-                cropRect.x = image.getWidth(null) - cropRect.width;
-            }
-            if (cropRect.y + cropRect.height > image.getHeight(null)) {
-                cropRect.y = image.getHeight(null) - cropRect.height;
-            }
-            repaint();
-        }
-
+        // Draw crop box
+        g.setColor(Color.RED);
+        g.drawRect(topLeft.x, topLeft.y, cropSize, cropSize);
+        g.setColor(Color.BLUE);
+        g.fillRect(topLeft.x - 2, topLeft.y - 2, 5, 5);
+        g.fillRect(topLeft.x + cropSize - 3, topLeft.y - 2, 5, 5);
+        g.fillRect(topLeft.x - 2, topLeft.y + cropSize - 3, 5, 5);
+        g.fillRect(topLeft.x + cropSize - 3, topLeft.y + cropSize - 3, 5, 5);
     }
 
     public static void main(String[] args) {
@@ -92,9 +56,8 @@ public class ImageWindow extends JPanel {
             frame.setLocation((screen.width - frame.getWidth()) / 2, (screen.height - frame.getHeight()) / 2);
             frame.setVisible(true);
         } catch (Exception e) {
-            System.err.println("Error: " + e);
+            System.err.println("Error: " + e.getMessage());
             System.exit(1);
         }
     }
-
 }
