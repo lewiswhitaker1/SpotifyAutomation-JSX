@@ -108,7 +108,6 @@ function partTwo() {
 }
 
 function partThree() {
-  alert(choice);
     // Create a new window
     var win = new Window("dialog", "Size Selection");
 
@@ -184,11 +183,11 @@ function partThree() {
     app.doScript("Import (SHIFT + F3)", "Spotify");
 
     if (selection == "Small") {
-        app.doScript("Small (SHIFT + F6)", "Spotify")
+        resizeCode(38.922, 6.487);
     } else if (selection == "Medium") {
-        app.doScript("Medium (SHIFT + F5)", "Spotify")
+        resizeCode(58.382, 9.73);
     } else if (selection == "Large") {
-        app.doScript("Large (SHIFT + F4)", "Spotify")
+        resizeCode(77.843, 12.974);
     }
 
     app.copy();
@@ -470,53 +469,50 @@ function partThree() {
             songName = jsonData.name;
 
             trackJson.remove();
-          }
-        if (choice == "podcast"){
-          var authBat = new File(Folder.desktop + "/AUTH.bat");
-          authBat.open("w");
-          authBat.write("@echo off" + "\n");
-          authBat.write('powershell -Command "$encoded=[convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(\\"630362daba20469cb86bd75228f7e237:aeef6fa8de86452fa82b543f034d4858\\"));$response=curl.exe -X \\"POST\\" -H \\"Authorization: Basic $encoded\\" -d grant_type=client_credentials https://accounts.spotify.com/api/token;$key=($response | ConvertFrom-Json).access_token;$key" > %userprofile%\\Desktop\\key.txt');
-          authBat.close();
-          authBat.execute();
+        }
+        if (choice == "podcast") {
+            var authBat = new File(Folder.desktop + "/AUTH.bat");
+            authBat.open("w");
+            authBat.write("@echo off" + "\n");
+            authBat.write('powershell -Command "$encoded=[convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(\\"630362daba20469cb86bd75228f7e237:aeef6fa8de86452fa82b543f034d4858\\"));$response=curl.exe -X \\"POST\\" -H \\"Authorization: Basic $encoded\\" -d grant_type=client_credentials https://accounts.spotify.com/api/token;$key=($response | ConvertFrom-Json).access_token;$key" > %userprofile%\\Desktop\\key.txt');
+            authBat.close();
+            authBat.execute();
 
-          var authTokenFile = new File(Folder.desktop + "/key.txt");
-          $.sleep(1000);
-          authTokenFile.open("r");
-          var authToken = authTokenFile.read();
-          authTokenFile.close();
+            var authTokenFile = new File(Folder.desktop + "/key.txt");
+            $.sleep(1000);
+            authTokenFile.open("r");
+            var authToken = authTokenFile.read();
+            authTokenFile.close();
 
-          var trackId = getTrackIdFromSpotifyUrl(spotifyUrl);
+            var trackId = getTrackIdFromSpotifyUrl(spotifyUrl);
 
-          var trackJsonBat = new File(Folder.desktop + "/TRACK_JSON.bat");
-          trackJsonBat.open("w");
-          trackJsonBat.write("set TRACKID=" + trackId + "\n");
-          trackJsonBat.write("set AUTHTOKEN=" + authToken + "\n");
-          trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/shows/%TRACKID%\?market=GB" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
-          trackJsonBat.close();
+            var trackJsonBat = new File(Folder.desktop + "/TRACK_JSON.bat");
+            trackJsonBat.open("w");
+            trackJsonBat.write("set TRACKID=" + trackId + "\n");
+            trackJsonBat.write("set AUTHTOKEN=" + authToken + "\n");
+            trackJsonBat.write('curl.exe -X "GET" "https://api.spotify.com/v1/shows/%TRACKID%\?market=GB" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer %AUTHTOKEN%" > %userprofile%\\Desktop\\track.json\n');
+            trackJsonBat.close();
 
-          trackJsonBat.execute();
+            trackJsonBat.execute();
 
-          $.sleep(5000);
-          authBat.remove();
-          authTokenFile.remove();
-          trackJsonBat.remove();
+            $.sleep(5000);
+            authBat.remove();
+            authTokenFile.remove();
+            trackJsonBat.remove();
 
-          var artistName;
-          var songName;
+            var artistName;
+            var songName;
 
-          var trackJson = File("~/Desktop/track.json");
-          trackJson.open("r");
-          var jsonContent = trackJson.read();
-          trackJson.close();
+            var trackJson = File("~/Desktop/track.json");
+            trackJson.open("r");
+            var jsonContent = trackJson.read();
+            trackJson.close();
 
-          var jsonData = JSON.parse(jsonContent);
-          artistName = "";
-          songName = jsonData.name;
+            var jsonData = JSON.parse(jsonContent);
+            artistName = "";
+            songName = jsonData.name;
 
-          alert(trackId);
-          alert(songName);
-
-          trackJson.remove();
+            trackJson.remove();
         }
 
         var copyName = copy.name;
@@ -652,96 +648,95 @@ function partThree() {
         var file = new File(File.decode(Folder.desktop + "/spotify.svg"));
         file.remove();
     }
-  }
+}
 
-    partOne();
+partOne();
 
-    $.sleep(1000);
+$.sleep(1000);
 
-    partTwo();
+partTwo();
 
-    $.sleep(1000);
+$.sleep(1000);
 
-    partThree();
+partThree();
 
-    function create_UUID() {
-        var dt = new Date()
-            .getTime();
-        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = (dt + Math.random() * 16) % 16 | 0;
-            dt = Math.floor(dt / 16);
-            return (c == 'x' ? r : (r & 0x3 | 0x8))
-                .toString(16);
-        });
-        return uuid;
+function create_UUID() {
+    var dt = new Date()
+        .getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random() * 16) % 16 | 0;
+        dt = Math.floor(dt / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8))
+            .toString(16);
+    });
+    return uuid;
+}
+
+function getTrackIdFromSpotifyUrl(url) {
+    return url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
+}
+
+function run(cmd) {
+    var f = new File(Folder.temp.fsName + "/temp.bat");
+    f.open("w");
+    f.writeln(cmd);
+    f.close();
+    f.execute();
+}
+
+function resizeCode(widthInMm, heightInMm) {
+    var doc = app.activeDocument;
+
+    // Get the active layer
+    var activeLayer = app.activeDocument.activeLayer;
+
+    // Get the path items in the layer
+    var pathItems = activeLayer.pathItems;
+
+    // Check if there are any path items in the layer
+    if (pathItems.length > 0) {
+        // Get the bottom path item
+        var bottomPath = pathItems[pathItems.length - 1];
+
+        // Remove the bottom path item
+        bottomPath.remove();
     }
 
-    function getTrackIdFromSpotifyUrl(url) {
-        return url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
+    var myLayer = doc.layers.getByName("Layer 1");
+
+    var paths = [];
+    var compounds = [];
+
+    // Recursively find all paths and compound paths in the layer
+    function collectPaths(item) {
+        if (item.typename == "PathItem") {
+            paths.push(item);
+        } else if (item.typename == "CompoundPathItem") {
+            compounds.push(item);
+        } else if (item.typename == "GroupItem") {
+            for (var i = 0; i < item.pageItems.length; i++) {
+                collectPaths(item.pageItems[i]);
+            }
+        }
     }
 
-    function run(cmd) {
-        var f = new File(Folder.temp.fsName + "/temp.bat");
-        f.open("w");
-        f.writeln(cmd);
-        f.close();
-        f.execute();
+    // Get all paths and compound paths in the layer
+    for (var i = 0; i < myLayer.pageItems.length; i++) {
+        collectPaths(myLayer.pageItems[i]);
     }
 
-    function resizeCode(widthInMm, heightInMm)
-    {
-      var doc = app.activeDocument;
-
-      // Get the active layer
-      var activeLayer = app.activeDocument.activeLayer;
-
-      // Get the path items in the layer
-      var pathItems = activeLayer.pathItems;
-
-      // Check if there are any path items in the layer
-      if (pathItems.length > 0) {
-          // Get the bottom path item
-          var bottomPath = pathItems[pathItems.length - 1];
-
-          // Remove the bottom path item
-          bottomPath.remove();
-      }
-
-      var myLayer = doc.layers.getByName("Layer 1");
-
-      var paths = [];
-      var compounds = [];
-
-      // Recursively find all paths and compound paths in the layer
-      function collectPaths(item) {
-          if (item.typename == "PathItem") {
-              paths.push(item);
-          } else if (item.typename == "CompoundPathItem") {
-              compounds.push(item);
-          } else if (item.typename == "GroupItem") {
-              for (var i = 0; i < item.pageItems.length; i++) {
-                  collectPaths(item.pageItems[i]);
-              }
-          }
-      }
-
-      // Get all paths and compound paths in the layer
-      for (var i = 0; i < myLayer.pageItems.length; i++) {
-          collectPaths(myLayer.pageItems[i]);
-      }
-
-      var group = myLayer.groupItems.add();
-      for (var i = 0; i < paths.length; i++) {
-          paths[i].moveToBeginning(group);
-      }
-      for (var i = 0; i < compounds.length; i++) {
-          compounds[i].moveToBeginning(group);
-      }
-
-      var widthInPt = widthInMm / 25.4 * 72;
-      var heightInPt = heightInMm / 25.4 * 72;
-
-      group.width = widthInPt;
-      group.height = heightInPt;
-
+    var group = myLayer.groupItems.add();
+    for (var i = 0; i < paths.length; i++) {
+        paths[i].moveToBeginning(group);
     }
+    for (var i = 0; i < compounds.length; i++) {
+        compounds[i].moveToBeginning(group);
+    }
+
+    var widthInPt = widthInMm / 25.4 * 72;
+    var heightInPt = heightInMm / 25.4 * 72;
+
+    group.width = widthInPt;
+    group.height = heightInPt;
+
+}
