@@ -1,5 +1,4 @@
-#target "illustrator"
-#include 'json2.min.js'
+#target "illustrator"#include 'json2.min.js'
 
 var url;
 var choice;
@@ -647,6 +646,10 @@ function partThree() {
         }
         var file = new File(File.decode(Folder.desktop + "/spotify.svg"));
         file.remove();
+    }
+
+    if(choiceTwo == "perso") {
+      
     }
 }
 
