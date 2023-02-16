@@ -76,9 +76,9 @@ public class ImageCropper extends JPanel implements MouseListener, MouseMotionLi
         }
         try {
             BufferedImage croppedImage = image.getSubimage(cropBox.x, cropBox.y, cropBox.width, cropBox.height);
-            String fileName = "cropped.png";
-            ImageIO.write(croppedImage, "png", new File(fileName));
-            System.out.println("Image saved as " + fileName);
+            String desktop = System.getProperty("user.home") + "\\Desktop";
+            ImageIO.write(croppedImage, "png", new File(desktop + "/cropped.png"));
+            System.out.println("Image saved: " + desktop + "\\cropped.png");
             System.exit(0);
         } catch (RasterFormatException e) {
             System.out.println("Invalid crop box");
