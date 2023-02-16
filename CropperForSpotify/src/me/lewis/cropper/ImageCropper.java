@@ -2,7 +2,6 @@ package me.lewis.cropper;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
@@ -32,6 +31,11 @@ public class ImageCropper extends JPanel implements MouseListener, MouseMotionLi
                 saveImage();
             }
         });
+        saveButton.setFont(new Font("Arial", Font.BOLD,15));
+        saveButton.setOpaque(true);
+        saveButton.setBackground(Color.WHITE);
+        saveButton.setForeground(Color.BLACK);
+        saveButton.setFocusPainted(false);
         add(saveButton);
     }
 
