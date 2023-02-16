@@ -1,6 +1,6 @@
 package me.lewis.cropper;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -8,40 +8,49 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Cropper {
-    public static void main(String[] args) throws Exception {
-        if (args.length != 1) {
-            System.out.println("Usage: java ImageCropperExample <image-file>");
+    public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println("Usage: java ImageCropper <image file>");
             System.exit(1);
         }
-        File imageFile = new File(args[0]);
-        if (!imageFile.exists()) {
-            System.out.println("File not found: " + imageFile.getAbsolutePath());
+
+        BufferedImage image = null;
+        try {
+            image = javax.imageio.ImageIO.read(new java.io.File(args[0]));
+        } catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
-        BufferedImage image = ImageIO.read(imageFile);
-        ImageCropper cropper = new ImageCropper(image);
-        JFrame frame = new JFrame("Image Cropper Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        ImageCropper cropper = new ImageCropper(image, true);
+        javax.swing.JFrame frame = new javax.swing.JFrame("Image Cropper");
+        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         frame.add(cropper);
         frame.pack();
         frame.setVisible(true);
-        // Wait for the user to crop the image
-        Rectangle cropRect = null;
-        while ((cropRect = cropper.getCropRect()) == null) {
+
+        while (cropper.getCropRect() == null) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
-                // Ignore
+                e.printStackTrace();
             }
         }
-        // Crop the image and save it to a file
+
+        Rectangle cropRect = cropper.getCropRect();
         BufferedImage croppedImage = image.getSubimage(cropRect.x, cropRect.y, cropRect.width, cropRect.height);
-        String formatName = JOptionPane.showInputDialog(frame, "Enter image format (e.g., png, jpg, gif)");
-        if (formatName != null) {
-            File outputFile = new File(imageFile.getParentFile(), "cropped." + formatName);
-            ImageIO.write(croppedImage, formatName, outputFile);
-            System.out.println("Cropped image saved to " + outputFile.getAbsolutePath());
-        }
-        System.exit(0);
+
+        javax.swing.JFrame croppedFrame = new javax.swing.JFrame("Cropped Image");
+        javax.swing.JPanel croppedPanel = new javax.swing.JPanel() {
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(croppedImage, 0, 0, null);
+            }
+        };
+        croppedPanel.setPreferredSize(new Dimension(croppedImage.getWidth(), croppedImage.getHeight()));
+        croppedFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        croppedFrame.add(croppedPanel);
+        croppedFrame.pack();
+        croppedFrame.setVisible(true);
     }
 }
