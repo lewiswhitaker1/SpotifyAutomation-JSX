@@ -1,99 +1,181 @@
 package me.lewis.cropper;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
-import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.*;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
+import javax.swing.*;
 
-public class ImageCropper extends JPanel {
-    private static final int HANDLE_SIZE = 8;
+public class ImageCropper extends JPanel implements MouseListener, MouseMotionListener {
+
     private BufferedImage image;
-    private Rectangle cropRect;
-    private Point dragStart;
-    private boolean lockedRatio;
-    private double aspectRatio = 1.0;
+    private boolean maintainAspectRatio;
+    private Point startPoint;
+    private Point endPoint;
+    private Rectangle cropBox;
+    private boolean dragging;
+    private JButton saveButton;
 
-    public ImageCropper(BufferedImage image, boolean lockedRatio) {
+    public ImageCropper(BufferedImage image, boolean maintainAspectRatio) {
         this.image = image;
-        this.lockedRatio = lockedRatio;
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                dragStart = e.getPoint();
-            }
-
-            public void mouseReleased(MouseEvent e) {
-                dragStart = null;
+        this.maintainAspectRatio = maintainAspectRatio;
+        setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+        setOpaque(true);
+        setBackground(Color.WHITE);
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        saveButton = new JButton("Save");
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                saveImage();
             }
         });
-        addMouseMotionListener(new MouseMotionAdapter() {
-            public void mouseDragged(MouseEvent e) {
-                int x = Math.min(dragStart.x, e.getX());
-                int y = Math.min(dragStart.y, e.getY());
-                int width = Math.abs(dragStart.x - e.getX());
-                int height = Math.abs(dragStart.y - e.getY());
-                if (lockedRatio) {
-                    if (width > height) {
-                        height = (int) (width / aspectRatio);
-                    } else {
-                        width = (int) (height * aspectRatio);
-                    }
+        add(saveButton);
+    }
+
+    public void setAspectRatio(int width, int height) {
+        int size;
+        if (width == 0 || height == 0) {
+            return;
+        }
+        if (maintainAspectRatio) {
+            double imageAspectRatio = (double) image.getWidth() / (double) image.getHeight();
+            double targetAspectRatio = (double) width / (double) height;
+            if (imageAspectRatio > targetAspectRatio) {
+                width = (int) (height * imageAspectRatio);
+            } else {
+                height = (int) (width / imageAspectRatio);
+            }
+        }
+        if (startPoint != null && endPoint != null) {
+            int newWidth = width;
+            int newHeight = height;
+            if (maintainAspectRatio) {
+                if (newWidth < newHeight) {
+                    newWidth = newHeight;
+                } else {
+                    newHeight = newWidth;
                 }
-                cropRect = new Rectangle(x, y, width, height);
-                repaint();
             }
-        });
+            endPoint.x = startPoint.x + newWidth;
+            endPoint.y = startPoint.y + newHeight;
+            repaint();
+        }
     }
 
-    public Dimension getPreferredSize() {
-        return new Dimension(image.getWidth(), image.getHeight());
-    }
-
-    public Rectangle getCropRect() {
-        return cropRect;
+    public void saveImage() {
+        if (cropBox == null) {
+            System.out.println("No crop box selected");
+            return;
+        }
+        try {
+            BufferedImage croppedImage = image.getSubimage(cropBox.x, cropBox.y, cropBox.width, cropBox.height);
+            String fileName = "cropped.png";
+            ImageIO.write(croppedImage, "png", new File(fileName));
+            System.out.println("Image saved as " + fileName);
+            System.exit(0);
+        } catch (RasterFormatException e) {
+            System.out.println("Invalid crop box");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(image, 0, 0, null);
-        if (cropRect != null) {
-            g.setColor(new Color(0, 0, 0, 64));
-            g.fillRect(0, 0, getWidth(), cropRect.y);
-            g.fillRect(0, cropRect.y, cropRect.x, cropRect.height);
-            g.fillRect(cropRect.x + cropRect.width, cropRect.y, getWidth() - cropRect.x - cropRect.width, cropRect.height);
-            g.fillRect(0, cropRect.y + cropRect.height, getWidth(), getHeight() - cropRect.y - cropRect.height);
-            g.setColor(Color.BLACK);
-            g.drawRect(cropRect.x, cropRect.y, cropRect.width, cropRect.height);
-            if (lockedRatio) {
-                int handleSize = HANDLE_SIZE * 2;
-                int handleX = cropRect.x + cropRect.width - HANDLE_SIZE;
-                int handleY = cropRect.y + cropRect.height - HANDLE_SIZE;
-                g.fillRect(handleX, handleY, handleSize, handleSize);
-            } else {
-                g.fillRect(cropRect.x, cropRect.y, HANDLE_SIZE, HANDLE_SIZE);
-                g.fillRect(cropRect.x + cropRect.width - HANDLE_SIZE, cropRect.y, HANDLE_SIZE, HANDLE_SIZE);
-                g.fillRect(cropRect.x, cropRect.y + cropRect.height - HANDLE_SIZE, HANDLE_SIZE, HANDLE_SIZE);
-                g.fillRect(cropRect.x + cropRect.width - HANDLE_SIZE, cropRect.y + cropRect.height - HANDLE_SIZE, HANDLE_SIZE, HANDLE_SIZE);
+        if (image != null) {
+            g.drawImage(image, 0, 0, this);
+
+            if (cropBox != null) {
+                g.setColor(new Color(0, 0, 0, 150));
+                g.fillRect(0, 0, cropBox.x, getHeight());
+                g.fillRect(cropBox.x + cropBox.width, 0, getWidth() - cropBox.x - cropBox.width, getHeight());
+                g.fillRect(cropBox.x, 0, cropBox.width, cropBox.y);
+                g.fillRect(cropBox.x, cropBox.y + cropBox.height, cropBox.width, getHeight() - cropBox.y - cropBox.height);
+
+                g.setColor(Color.WHITE);
+                g.drawRect(cropBox.x, cropBox.y, cropBox.width, cropBox.height);
             }
         }
     }
 
-    public void setAspectRatio(double aspectRatio) {
-        this.aspectRatio = aspectRatio;
-        if (lockedRatio && cropRect != null) {
-            int width = cropRect.width;
-            int height = (int) (width / aspectRatio);
-            if (cropRect.width > cropRect.height) {
-                cropRect.height = height;
-            } else {
-                cropRect.width = width;
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    public void mousePressed(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        if (cropBox == null) {
+            cropBox = new Rectangle(x, y, 0, 0);
+        } else {
+            cropBox.x = x;
+            cropBox.y = y;
+        }
+        repaint();
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        int width = x - cropBox.x;
+        int height = y - cropBox.y;
+
+        // ensure 1:1 aspect ratio
+        if (width > height) {
+            width = height;
+        } else {
+            height = width;
+        }
+        cropBox.setSize(width, height);
+
+        saveButton.setVisible(true);
+        repaint();
+    }
+
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        int width = x - cropBox.x;
+        int height = y - cropBox.y;
+
+        // ensure 1:1 aspect ratio
+        if (width > height) {
+            width = height;
+        } else {
+            height = width;
+        }
+        cropBox.setSize(width, height);
+
+        repaint();
+    }
+
+    public void mouseMoved(MouseEvent e) {
+
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == saveButton) {
+            try {
+                String extension = ".png";
+                File output = new File("output." + extension);
+                BufferedImage cropped = image.getSubimage(cropBox.x, cropBox.y, cropBox.width, cropBox.height);
+                ImageIO.write(cropped, extension, output);
+                JOptionPane.showMessageDialog(this, "Image saved successfully!");
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "An error occurred while saving the image.");
+                ex.printStackTrace();
             }
-            repaint();
         }
     }
 }
