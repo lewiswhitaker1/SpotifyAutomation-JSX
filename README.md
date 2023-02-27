@@ -1,10 +1,12 @@
 # SpotifyAutomation-JSX
 ## Designed to work with Adobe Illustrator CC 2023, Unsure Of Backwards Compatibility.
 Automatically Generate Artwork in Abobe Illustrator using Adobe's ExtendScript
-+ Uses Spotify API
-+ Uses curl for Windows https://curl.se/download.html (Installation Instructions https://linuxhint.com/install-use-curl-windows/)
++ No longer relies on Spotify API, Spotify web scraper was created by [morxwx](https://github.com/morxwx) to assist me and my troubles with the limitations of the Spotify API
 + Uses wget for Windows https://eternallybored.org/misc/wget/
 + Includes json2.min.js for parsing JSON information pulled from Spotify https://cdnjs.com/libraries/json2
++ Relies on "Cropper" which was a personal project to speed up and ease the process of cropping images into squares for this project
+
+### USER DOES NOT NEED TO DOWNLOAD THE SCRAPER & CROPPER JAR FILES AS THE SCRIPT FETCHES THEM AUTOMATICALLY.
 
 ## Video Showing Basic Usability
 
