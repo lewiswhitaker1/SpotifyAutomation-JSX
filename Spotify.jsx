@@ -1,4 +1,5 @@
-#target "illustrator"#include 'json2.min.js'
+#target "illustrator"
+#include 'json2.min.js'
 
 var spotifyUrl;
 var track_id;
