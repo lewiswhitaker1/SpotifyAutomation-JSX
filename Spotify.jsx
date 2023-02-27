@@ -1,5 +1,4 @@
-#target "illustrator"
-#include 'json2.min.js'
+#target "illustrator"#include 'json2.min.js'
 
 var spotifyUrl;
 var track_id;
@@ -11,11 +10,13 @@ var uuidList = [];
 function main() {
     spotifyUrl = prompt("Enter spotify URL:", "");
     track_id = getTrackIdFromSpotifyUrl(spotifyUrl);
-    run("wget -O %UserProfile%\\Desktop\\spotify.jar https://github.com/lewiswhitaker1/SpotifyAutomation-JSX/raw/main/jar/spotify.jar", false);
     var jar = new File(Folder.desktop + "/spotify.jar");
+    if (!jar.exists) {
+        run("wget -O %UserProfile%\\Desktop\\spotify.jar https://github.com/lewiswhitaker1/SpotifyAutomation-JSX/raw/main/jar/spotify.jar", false);
 
-    while (!jar.exists) {
-        $.sleep(1000);
+        while (!jar.exists) {
+            $.sleep(1000);
+        }
     }
     run("java -jar %userprofile%\\Desktop\\spotify.jar " + spotifyUrl, false);
 }
@@ -161,11 +162,13 @@ function spotifyInfo(copy, selection) {
 
     but2.onClick = function() {
         choiceTwo = "perso";
-        run("wget -O %UserProfile%\\Desktop\\cropper.jar https://github.com/lewiswhitaker1/SpotifyAutomation-JSX/raw/main/jar/cropper.jar", false);
         var jar = new File(Folder.desktop + "/cropper.jar");
+        if (!jar.exists) {
+            run("wget -O %UserProfile%\\Desktop\\cropper.jar https://github.com/lewiswhitaker1/SpotifyAutomation-JSX/raw/main/jar/cropper.jar", false);
 
-        while (!jar.exists) {
-            $.sleep(1000);
+            while (!jar.exists) {
+                $.sleep(1000);
+            }
         }
         ps.close();
     };
@@ -369,162 +372,162 @@ function fillInfo(track_id) {
 }
 
 function setNamesAndMove(copy, selection) {
-  var copyName = copy.name;
+    var copyName = copy.name;
 
-// Get the active document
-var doc = app.activeDocument;
+    // Get the active document
+    var doc = app.activeDocument;
 
-// Loop through all the artboards in the document
-for (var i = 0; i < doc.artboards.length; i++) {
-    // Set the current artboard as the active artboard
-    doc.artboards.setActiveArtboardIndex(i);
+    // Loop through all the artboards in the document
+    for (var i = 0; i < doc.artboards.length; i++) {
+        // Set the current artboard as the active artboard
+        doc.artboards.setActiveArtboardIndex(i);
 
-    // Loop through all the groups in the active artboard
-    for (var j = 0; j < doc.groupItems.length; j++) {
-        var group = doc.groupItems[j];
+        // Loop through all the groups in the active artboard
+        for (var j = 0; j < doc.groupItems.length; j++) {
+            var group = doc.groupItems[j];
 
-        // Check if the group has the name "Small123"
-        if (group.name === copyName) {
-            // Loop through all the text layers in the group
-            for (var k = 0; k < group.textFrames.length; k++) {
-                var textLayer = group.textFrames[k];
-                if (textLayer.contents.indexOf("Song Name") !== -1) {
-                    // Set the text of the text layer to the new text
-                    textLayer.contents = songName;
+            // Check if the group has the name "Small123"
+            if (group.name === copyName) {
+                // Loop through all the text layers in the group
+                for (var k = 0; k < group.textFrames.length; k++) {
+                    var textLayer = group.textFrames[k];
+                    if (textLayer.contents.indexOf("Song Name") !== -1) {
+                        // Set the text of the text layer to the new text
+                        textLayer.contents = songName;
+                    }
                 }
             }
         }
     }
-}
 
-// Loop through all the artboards in the document
-for (var i = 0; i < doc.artboards.length; i++) {
-    // Set the current artboard as the active artboard
-    doc.artboards.setActiveArtboardIndex(i);
+    // Loop through all the artboards in the document
+    for (var i = 0; i < doc.artboards.length; i++) {
+        // Set the current artboard as the active artboard
+        doc.artboards.setActiveArtboardIndex(i);
 
-    // Loop through all the groups in the active artboard
-    for (var j = 0; j < doc.groupItems.length; j++) {
-        var group = doc.groupItems[j];
+        // Loop through all the groups in the active artboard
+        for (var j = 0; j < doc.groupItems.length; j++) {
+            var group = doc.groupItems[j];
 
-        // Check if the group has the name "Small123"
-        if (group.name === copyName) {
-            // Loop through all the text layers in the group
-            for (var k = 0; k < group.textFrames.length; k++) {
-                var textLayer = group.textFrames[k];
-                if (textLayer.contents.indexOf("Artist Name") !== -1) {
-                    // Set the text of the text layer to the new text
-                    textLayer.contents = artistName;
+            // Check if the group has the name "Small123"
+            if (group.name === copyName) {
+                // Loop through all the text layers in the group
+                for (var k = 0; k < group.textFrames.length; k++) {
+                    var textLayer = group.textFrames[k];
+                    if (textLayer.contents.indexOf("Artist Name") !== -1) {
+                        // Set the text of the text layer to the new text
+                        textLayer.contents = artistName;
+                    }
                 }
             }
         }
     }
-}
-copy.transform(app.getScaleMatrix(-100, 100));
+    copy.transform(app.getScaleMatrix(-100, 100));
 
-var layerExists = false;
+    var layerExists = false;
 
-for (var i = 0; i < doc.layers.length; i++) {
-    if (doc.layers[i].name == "Artwork") {
-        layerExists = true;
-        break;
-    }
-}
-
-if (!layerExists) {
-    var layer = doc.layers.add();
-    layer.name = "Artwork";
-    copy.move(layer, ElementPlacement.PLACEATEND);
-
-    var distance = 10;
-    var distanceInPoints = distance * 2.8346;
-    var artboard = doc.artboards[0];
-    var artboardRect = artboard.artboardRect;
-
-
-    var newX = artboardRect[0] + distanceInPoints;
-    var newY = artboardRect[1] - distanceInPoints;
-    copy.position = [newX, newY];
-}
-
-if (layerExists) {
-    var layer = doc.layers.getByName("Artwork");
-    var bottomGroup;
-
-    for (var i = 0; i < layer.groupItems.length; i++) {
-        var group = layer.groupItems[i];
-
-        // Check if this is the bottom group
-        if (!bottomGroup || group.position[1] > bottomGroup.position[1]) {
-            bottomGroup = group;
+    for (var i = 0; i < doc.layers.length; i++) {
+        if (doc.layers[i].name == "Artwork") {
+            layerExists = true;
+            break;
         }
     }
 
-    copy.move(layer, ElementPlacement.PLACEATEND);
+    if (!layerExists) {
+        var layer = doc.layers.add();
+        layer.name = "Artwork";
+        copy.move(layer, ElementPlacement.PLACEATEND);
 
-    var offset = bottomGroup.top - copy.top;
-    copy.top += offset;
+        var distance = 10;
+        var distanceInPoints = distance * 2.8346;
+        var artboard = doc.artboards[0];
+        var artboardRect = artboard.artboardRect;
 
-    var distance = 10;
-    var distanceInPoints = distance * 2.8346;
 
+        var newX = artboardRect[0] + distanceInPoints;
+        var newY = artboardRect[1] - distanceInPoints;
+        copy.position = [newX, newY];
+    }
 
-    // Get the artboard and the groups on the artboard
-    var artboard = doc.artboards[0];
-    var groups = layer.groupItems;
+    if (layerExists) {
+        var layer = doc.layers.getByName("Artwork");
+        var bottomGroup;
 
-    // Set the distance between groups
-    var distance = 10;
-    var distanceInPoints = distance * 2.8346;
+        for (var i = 0; i < layer.groupItems.length; i++) {
+            var group = layer.groupItems[i];
 
-    // Set the starting position for the first group
-    var x = artboard.artboardRect[0] + distanceInPoints;
-    var y = artboard.artboardRect[1] - distanceInPoints;
-
-    // Loop through the groups
-    for (var i = 0; i < groups.length; i++) {
-        var group = groups[i];
-
-        // Check if the group fits on the current row
-        if (x + group.width > artboard.artboardRect[2]) {
-            // Move the group to the next row
-            x = artboard.artboardRect[0] + distanceInPoints;
-            y += (group.height - (group.height * 2)) - distanceInPoints;
+            // Check if this is the bottom group
+            if (!bottomGroup || group.position[1] > bottomGroup.position[1]) {
+                bottomGroup = group;
+            }
         }
 
-        // Move the group to the current position
-        group.left = x;
-        group.top = y;
+        copy.move(layer, ElementPlacement.PLACEATEND);
 
-        // Update the current position for the next group
-        x += group.width + distanceInPoints;
+        var offset = bottomGroup.top - copy.top;
+        copy.top += offset;
+
+        var distance = 10;
+        var distanceInPoints = distance * 2.8346;
+
+
+        // Get the artboard and the groups on the artboard
+        var artboard = doc.artboards[0];
+        var groups = layer.groupItems;
+
+        // Set the distance between groups
+        var distance = 10;
+        var distanceInPoints = distance * 2.8346;
+
+        // Set the starting position for the first group
+        var x = artboard.artboardRect[0] + distanceInPoints;
+        var y = artboard.artboardRect[1] - distanceInPoints;
+
+        // Loop through the groups
+        for (var i = 0; i < groups.length; i++) {
+            var group = groups[i];
+
+            // Check if the group fits on the current row
+            if (x + group.width > artboard.artboardRect[2]) {
+                // Move the group to the next row
+                x = artboard.artboardRect[0] + distanceInPoints;
+                y += (group.height - (group.height * 2)) - distanceInPoints;
+            }
+
+            // Move the group to the current position
+            group.left = x;
+            group.top = y;
+
+            // Update the current position for the next group
+            x += group.width + distanceInPoints;
+        }
     }
-}
 }
 
 function pushToList(name) {
-  try {
-    var photoNameList = new File(Folder.desktop + "/photoNames.json");
-    photoNameList.open("r");
-    var fileContents = photoNameList.read();
-    photoNameList.close();
-} catch (e) {
-    alert("An error occurred while opening the file: " + e);
-}
+    try {
+        var photoNameList = new File(Folder.desktop + "/photoNames.json");
+        photoNameList.open("r");
+        var fileContents = photoNameList.read();
+        photoNameList.close();
+    } catch (e) {
+        alert("An error occurred while opening the file: " + e);
+    }
 
-try {
-    uuidList = JSON.parse(fileContents);
-} catch (e) {
-    // fileContents is not valid JSON, so start with an empty array
-    uuidList = [];
-}
+    try {
+        uuidList = JSON.parse(fileContents);
+    } catch (e) {
+        // fileContents is not valid JSON, so start with an empty array
+        uuidList = [];
+    }
 
-uuidList.push(name + ".png");
+    uuidList.push(name + ".png");
 
-try {
-    photoNameList.open("w");
-    photoNameList.write(JSON.stringify(uuidList));
-    photoNameList.close();
-} catch (e) {
-    alert("An error occurred while writing to the file: " + e);
-}
+    try {
+        photoNameList.open("w");
+        photoNameList.write(JSON.stringify(uuidList));
+        photoNameList.close();
+    } catch (e) {
+        alert("An error occurred while writing to the file: " + e);
+    }
 }
