@@ -176,10 +176,8 @@ function spotifyInfo(copy, selection) {
         var targetDoc = app.documents.getByName("Spotify.ai");
         var chosenPhotoFile = File.openDialog("Select a personalised photo to open", "*.*");
         var path = chosenPhotoFile.fsName;
-        alert(chosenPhotoFile)
-        alert(path);
         var cmd = "java -jar %UserProfile%\\Desktop\\cropper.jar " + "\"" + path + "\"";
-        run(cmd, true);
+        run(cmd, false);
         var photoFile = new File(File.decode(Folder.desktop + "/cropped.png"));
 
         while (!photoFile.exists) {

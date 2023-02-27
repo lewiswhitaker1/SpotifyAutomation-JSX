@@ -42,7 +42,7 @@ var spotifyFolder = new Folder(spotifyPath);
 
 if (spotifyFolder.exists) {
   // Delete the folder and everything inside of it
-  run("rm -rf %UserProfile%\\Desktop\\spotify", false);
+  run("rmdir /s /q %UserProfile%\\Desktop\\spotify", false);
 } else {
   alert("The Spotify folder doesn't exist.");
 }
