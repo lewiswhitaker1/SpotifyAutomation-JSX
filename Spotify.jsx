@@ -224,6 +224,7 @@ function spotifyInfo(copy, selection) {
         placedPhoto.zOrder(ZOrderMethod.SENDTOBACK);
         placedPhoto.move(copy, ElementPlacement.PLACEATEND);
     }
+    bugGroup();
     setNamesAndMove(copy, selection);
 }
 
@@ -530,5 +531,16 @@ function pushToList(name) {
         photoNameList.close();
     } catch (e) {
         alert("An error occurred while writing to the file: " + e);
+    }
+}
+
+function bugGroup()
+{
+    var doc = app.activeDocument; // get the active document
+
+    for (var i = 0; i < doc.groupItems.length; i++) {
+      if (doc.groupItems[i].name == "") {
+        doc.groupItems[i].remove(); // remove the group item
+      }
     }
 }
